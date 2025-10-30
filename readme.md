@@ -1,1 +1,1 @@
-falta consertar a receita, fazer relatorio e ajeitar alguns fatores, entre outras coisas que não consegui distinguir agora. Temos pronto o cadastrar adm/funcionario com as abas de estoque, se houver mais atualizações substitua esse arquivo com elas!
+falta consertar a receita, fazer relatorio e ajeitar alguns fatores, entre outras coisas que não consegui pensar agora. Temos pronto o cadastrar adm/funcionario com as abas de estoque, se houver mais atualizações substitua esse arquivo com elas!
