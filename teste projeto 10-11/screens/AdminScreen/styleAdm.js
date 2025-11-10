@@ -55,30 +55,34 @@ export default StyleSheet.create({
     textAlign: "center",
   },
 
-  // ===== Listagem (para Estoque, Receitas, etc.) =====
+  // ===== Listagem =====
   listItem: {
     backgroundColor: "#1A1A1A",
     borderRadius: 12,
     padding: 15,
     marginVertical: 8,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 3,
     elevation: 3,
+
+    // Layout em coluna
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
 
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  // ===== Linha dos botões =====
+  buttonRow: {
+    flexDirection: "row",            // coloca os botões lado a lado
+    justifyContent: "space-between", // separa levemente os dois botões
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 12,
+    width: "100%",                   // garante alinhamento na largura do card
   },
 
-  // ===== Modal de confirmação =====
+  // ===== Modal =====
   modalContainer: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
@@ -88,7 +92,7 @@ export default StyleSheet.create({
   },
 
   modalContent: {
-    backgroundColor: "#2B1E3F", // lilás escuro
+    backgroundColor: "#2B1E3F",
     borderRadius: 14,
     padding: 25,
     width: "90%",
@@ -120,13 +124,13 @@ export default StyleSheet.create({
     marginTop: 20,
   },
 
-  // ===== Saída =====
+  // ===== Logout =====
   logoutContainer: {
     marginVertical: 30,
     alignItems: "center",
   },
 
-  // ===== Campos de input (caso existam) =====
+  // ===== Input =====
   input: {
     backgroundColor: "#1E1E1E",
     color: "#FFF",
@@ -137,52 +141,53 @@ export default StyleSheet.create({
     borderColor: "#444",
   },
 
-  // ===== Texto de aviso ou vazio =====
+  // ===== Texto vazio =====
   emptyText: {
     color: "#777",
     textAlign: "center",
     marginTop: 40,
     fontSize: 16,
   },
-  buttonEdit: {
-  backgroundColor: "#2E86C1", // azul mais escuro que o antigo
-  paddingVertical: 8,
-  paddingHorizontal: 20,
-  borderRadius: 8,
-  alignItems: "center",
-  justifyContent: "center",
-  marginRight: 10,
-},
 
-buttonDelete: {
-  backgroundColor: "#C0392B", // vermelho escuro elegante
-  paddingVertical: 8,
-  paddingHorizontal: 20,
-  borderRadius: 8,
-  alignItems: "center",
-  justifyContent: "center",
-},
-buttonPrimary: {
-  backgroundColor: "#884EA0", // lilás padrão do tema
-  paddingVertical: 10,
-  paddingHorizontal: 20,
-  borderRadius: 10,
-  alignItems: "center",
-  justifyContent: "center",
-  marginVertical: 10,
-  shadowColor: "#000",
-  shadowOpacity: 0.25,
-  shadowOffset: { width: 0, height: 3 },
-  shadowRadius: 4,
-  elevation: 5,
-},
-textinho:{
-  color: "#FFF",
+  // ===== Botões =====
+  buttonEdit: {
+    backgroundColor: "#2E86C1", // azul
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10, // espaçamento entre Editar e Excluir
+  },
+
+  buttonDelete: {
+    backgroundColor: "#C0392B", // vermelho
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  buttonPrimary: {
+    backgroundColor: "#884EA0",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 4,
+    elevation: 5,
+  },
+
+  textinho: {
+    color: "#FFF",
     fontWeight: "bold",
     fontSize: 14,
-    textAlign: "center"
-},
-
-
-
+    textAlign: "center",
+  },
 });
