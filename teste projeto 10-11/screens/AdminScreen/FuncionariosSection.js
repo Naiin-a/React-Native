@@ -47,7 +47,6 @@ export default function FuncionariosSection({
         f.email.stringValue.toLowerCase() === emailFunc.toLowerCase() &&
         id !== editandoFuncId
       );
-      
     });
 
     if (!emailFunc.includes("@")) {
@@ -61,7 +60,6 @@ export default function FuncionariosSection({
       return;
     }
 
-    // --- NOVA VALIDAÇÃO DE SENHA ---
     if (senhaFunc.length < 8) {
       Toast.show({
         type: "error",
@@ -182,9 +180,10 @@ export default function FuncionariosSection({
               <Text style={{ color: "#BBB", fontSize: 12 }}>{item.email}</Text>
             </View>
 
-            <View style={styles.row}>
+            {/* 🔹 Botões lado a lado */}
+            <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
               <TouchableOpacity
-                style={styles.buttonEdit}
+                style={[styles.buttonEdit, { flex: 1 }]}
                 onPress={() => {
                   setEditandoFuncId(item.id);
                   setNomeFunc(item.nome);
@@ -196,7 +195,7 @@ export default function FuncionariosSection({
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.buttonDelete}
+                style={[styles.buttonDelete, { flex: 1 }]}
                 onPress={() => confirmarExclusao(item.id, "funcionario", item.nome)}
               >
                 <Text style={styles.buttonText}>Excluir</Text>
