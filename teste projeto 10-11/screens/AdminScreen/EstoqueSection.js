@@ -161,9 +161,10 @@ export default function EstoqueSection({
               </Text>
             </View>
 
-            <View style={styles.row}>
+            {/* 🔹 Botões lado a lado */}
+            <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
               <TouchableOpacity
-                style={styles.buttonEdit}
+                style={[styles.buttonEdit, { flex: 1 }]}
                 onPress={() => {
                   setEditandoId(item.id);
                   setNovoNome(item.nome);
@@ -174,7 +175,7 @@ export default function EstoqueSection({
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.buttonDelete}
+                style={[styles.buttonDelete, { flex: 1 }]}
                 onPress={() => confirmarExclusao(item.id, "estoque", item.nome)}
               >
                 <Text style={styles.buttonText}>Excluir</Text>
