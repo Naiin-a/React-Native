@@ -1,202 +1,258 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, FlatList, TouchableOpacity, Animated } from "react-native";
 import Toast from "react-native-toast-message";
 import styles from "./styleAdm";
 
-export default function FuncionariosSection({
+export default function ReceitasSection({
   confirmarExclusao,
   getDocuments,
   createDocument,
   updateDocument,
   deleteDocument,
 }) {
-  const [funcionarios, setFuncionarios] = useState([]);
-  const [nomeFunc, setNomeFunc] = useState("");
-  const [emailFunc, setEmailFunc] = useState("");
-  const [senhaFunc, setSenhaFunc] = useState("");
-  const [tipoFunc, setTipoFunc] = useState("");
-  const [editandoFuncId, setEditandoFuncId] = useState(null);
+  const [receitas, setReceitas] = useState([]);
+  const [novaReceitaNome, setNovaReceitaNome] = useState("");
+  const [itensSelecionados, setItensSelecionados] = useState([]);
+  const [editandoReceitaId, setEditandoReceitaId] = useState(null);
+  const [estoque, setEstoque] = useState([]);
+  const [mostrarItens, setMostrarItens] = useState(false); // 👈 controla abrir/fechar lista de itens
 
-  async function carregarFuncionarios() {
-    const docs = await getDocuments("usuarios");
-    const lista = docs.map((doc) => {
+  async function carregarReceitas() {
+    const docs = await getDocuments("receitas");
+    if (!docs || docs.length === 0) {
+      setReceitas([]);
+      return;
+    }
+
+    const recs = docs.map((doc) => {
       const f = doc.fields;
+      const itens = Array.isArray(f.itens?.arrayValue?.values)
+        ? f.itens.arrayValue.values.map((v) => {
+            const campos = v.mapValue?.fields || {};
+            return {
+              itemId: campos.itemId?.stringValue || "",
+              quantidade: parseInt(campos.quantidade?.integerValue || "0"),
+            };
+          })
+        : [];
+
       return {
         id: doc.name.split("/").pop(),
-        nome: f.nome.stringValue,
-        email: f.email.stringValue,
-        senha: f.senha.stringValue,
-        tipo: f.tipo?.stringValue || "",
+        nome: f.nome?.stringValue || "Sem nome",
+        itens,
       };
     });
-    lista.sort((a, b) => a.nome.localeCompare(b.nome));
-    setFuncionarios(lista);
+
+    recs.sort((a, b) => a.nome.localeCompare(b.nome));
+    setReceitas(recs);
   }
 
-  async function salvarFuncionario() {
-    if (!nomeFunc || !emailFunc || !senhaFunc) return;
-
-    const funcionariosDocs = await getDocuments("usuarios");
-    const adminsDocs = await getDocuments("admins");
-    const todos = [...funcionariosDocs, ...adminsDocs];
-
-    const emailExiste = todos.some((doc) => {
-      const f = doc.fields;
-      const id = doc.name.split("/").pop();
-      return (
-        f.email.stringValue.toLowerCase() === emailFunc.toLowerCase() &&
-        id !== editandoFuncId
-      );
+  async function carregarEstoque() {
+    const docs = await getDocuments("estoque");
+    const itens = docs.map((doc) => {
+      const f = doc.fields || {};
+      return {
+        id: doc.name.split("/").pop(),
+        nome: f.nome?.stringValue || "",
+        quantidade: parseInt(f.quantidade?.integerValue || "0"),
+      };
     });
+    itens.sort((a, b) => a.nome.localeCompare(b.nome));
+    setEstoque(itens);
+  }
 
-    if (!emailFunc.includes("@")) {
-      Toast.show({
-        type: "error",
-        text1: "Email Inválido",
-        text2: "Insira um email valido",
-        position: "top",
-        visibilityTime: 2000,
-      });
-      return;
-    }
+  function toggleItemSelecionado(itemId) {
+    setItensSelecionados((prev) =>
+      prev.some((i) => i.itemId === itemId)
+        ? prev.filter((i) => i.itemId !== itemId)
+        : [...prev, { itemId, quantidade: 1 }]
+    );
+  }
 
-    if (senhaFunc.length < 8) {
-      Toast.show({
-        type: "error",
-        text1: "Senha Inválida",
-        text2: "A senha deve ter no mínimo 8 caracteres.",
-        position: "top",
-        visibilityTime: 2000,
-      });
-      return;
-    }
+  async function salvarReceita() {
+    if (!novaReceitaNome || itensSelecionados.length === 0) return;
 
-    if (emailExiste) {
-      Toast.show({
-        type: "error",
-        text1: "Erro",
-        text2: "Este email já está cadastrado!",
-        position: "top",
-        visibilityTime: 2000,
-      });
-      return;
-    }
+    const itensParaSalvar = itensSelecionados.map((i) => ({
+      itemId: i.itemId,
+      quantidade: i.quantidade,
+    }));
 
-    const dados = {
-      nome: nomeFunc,
-      email: emailFunc,
-      senha: senhaFunc,
-      tipo: tipoFunc || "funcionario",
-    };
+    const dadosReceita = { nome: novaReceitaNome, itens: itensParaSalvar };
 
-    if (editandoFuncId) {
-      await updateDocument("usuarios", editandoFuncId, dados);
+    if (editandoReceitaId) {
+      await updateDocument("receitas", editandoReceitaId, dadosReceita);
     } else {
-      await createDocument("usuarios", dados);
+      await createDocument("receitas", dadosReceita);
     }
 
-    setNomeFunc("");
-    setEmailFunc("");
-    setSenhaFunc("");
-    setTipoFunc("");
-    setEditandoFuncId(null);
-    carregarFuncionarios();
+    setNovaReceitaNome("");
+    setItensSelecionados([]);
+    setEditandoReceitaId(null);
+    carregarReceitas();
 
     Toast.show({
       type: "success",
       text1: "Sucesso",
-      text2: `Funcionário ${editandoFuncId ? "atualizado" : "cadastrado"} com sucesso!`,
+      text2: `Receita ${editandoReceitaId ? "atualizada" : "cadastrada"} com sucesso!`,
       position: "top",
       visibilityTime: 2000,
     });
   }
 
-  async function excluirFuncionario(id) {
+  async function excluirReceita(id) {
     try {
-      await deleteDocument("usuarios", id);
-      carregarFuncionarios();
+      await deleteDocument("receitas", id);
+      carregarReceitas();
     } catch (error) {
-      console.error("Erro ao excluir funcionário:", error);
+      console.error("Erro ao excluir receita:", error);
     }
   }
 
   useEffect(() => {
-    carregarFuncionarios();
+    carregarReceitas();
+    carregarEstoque();
 
     const deletar = (e) => {
-      if (e.detail.tipo === "funcionario") excluirFuncionario(e.detail.id);
+      if (e.detail.tipo === "receita") excluirReceita(e.detail.id);
     };
     document.addEventListener("deleteItem", deletar);
-    document.addEventListener("carregarTudo", carregarFuncionarios);
+    document.addEventListener("carregarTudo", carregarReceitas);
     return () => {
       document.removeEventListener("deleteItem", deletar);
-      document.removeEventListener("carregarTudo", carregarFuncionarios);
+      document.removeEventListener("carregarTudo", carregarReceitas);
     };
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.subtitle}>Gerenciar Funcionários</Text>
+      <Text style={styles.subtitle}>Gerenciar Receitas</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Nome"
+        placeholder="Nome da receita"
         placeholderTextColor="#888"
-        value={nomeFunc}
-        onChangeText={setNomeFunc}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor="#888"
-        value={emailFunc}
-        onChangeText={setEmailFunc}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        placeholderTextColor="#888"
-        value={senhaFunc}
-        onChangeText={setSenhaFunc}
-        secureTextEntry
+        value={novaReceitaNome}
+        onChangeText={setNovaReceitaNome}
       />
 
-      <TouchableOpacity style={styles.buttonPrimary} onPress={salvarFuncionario}>
-        <Text style={styles.buttonText}>
-          {editandoFuncId ? "Atualizar Funcionário" : "Salvar Funcionário"}
+      {/* Botão de colapsar a lista */}
+      <TouchableOpacity
+        style={{
+          marginTop: 10,
+          backgroundColor: "#2B1E3F",
+          borderRadius: 8,
+          paddingVertical: 10,
+          alignItems: "center",
+        }}
+        onPress={() => setMostrarItens(!mostrarItens)}
+      >
+        <Text style={{ color: "#E6D4FA", fontWeight: "bold" }}>
+          {mostrarItens ? "Esconder Itens ▲" : "Mostrar Itens ▼"}
         </Text>
       </TouchableOpacity>
 
-      <Text style={[styles.textinho, { marginTop: 16 }]}>Funcionários cadastrados:</Text>
+      {/* Lista colapsável */}
+      {mostrarItens && (
+        <View style={{ marginTop: 10 }}>
+          <Text style={[styles.textinho, { marginBottom: 6 }]}>
+            Selecionar Itens e Quantidades:
+          </Text>
+
+          {estoque.map((item) => {
+            const selecionado = itensSelecionados.find((i) => i.itemId === item.id);
+            return (
+              <View
+                key={item.id}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginVertical: 4,
+                }}
+              >
+                <TouchableOpacity
+                  style={{ flex: 1 }}
+                  onPress={() => toggleItemSelecionado(item.id)}
+                >
+                  <Text
+                    style={{
+                      color: selecionado ? "#A569BD" : "#DDD",
+                      fontWeight: selecionado ? "bold" : "normal",
+                    }}
+                  >
+                    {item.nome}
+                  </Text>
+                </TouchableOpacity>
+
+                {selecionado && (
+                  <TextInput
+                    style={[
+                      styles.input,
+                      { width: 60, marginVertical: 0, textAlign: "center" },
+                    ]}
+                    keyboardType="numeric"
+                    value={selecionado.quantidade.toString()}
+                    onChangeText={(txt) => {
+                      const novaQtd = parseInt(txt) || 0;
+                      setItensSelecionados((prev) =>
+                        prev.map((i) =>
+                          i.itemId === item.id
+                            ? { ...i, quantidade: novaQtd }
+                            : i
+                        )
+                      );
+                    }}
+                  />
+                )}
+              </View>
+            );
+          })}
+        </View>
+      )}
+
+      {/* Botão principal */}
+      <TouchableOpacity style={styles.buttonPrimary} onPress={salvarReceita}>
+        <Text style={styles.buttonText}>
+          {editandoReceitaId ? "Atualizar Receita" : "Salvar Receita"}
+        </Text>
+      </TouchableOpacity>
+
+      <Text style={[styles.textinho, { marginTop: 16 }]}>Receitas cadastradas:</Text>
 
       <FlatList
-        data={funcionarios}
-        keyExtractor={(item) => item.id}
+        data={receitas}
+        keyExtractor={(r) => r.id}
         contentContainerStyle={{ paddingBottom: 20 }}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: "bold", color: "#FFF" }}>{item.nome}</Text>
-              <Text style={{ color: "#BBB", fontSize: 12 }}>{item.email}</Text>
+              {item.itens.map((i) => {
+                const estoqueItem = estoque.find((e) => e.id === i.itemId);
+                return (
+                  <Text key={i.itemId} style={{ fontSize: 12, color: "#BBB" }}>
+                    • {estoqueItem ? estoqueItem.nome : "Item removido"}: {i.quantidade}
+                  </Text>
+                );
+              })}
             </View>
 
-            {/* 🔹 Botões lado a lado */}
-            <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
+            {/* Alterado aqui: styles.row -> styles.buttonRow */}
+            <View style={styles.buttonRow}>
               <TouchableOpacity
-                style={[styles.buttonEdit, { flex: 1 }]}
+                style={styles.buttonEdit}
                 onPress={() => {
-                  setEditandoFuncId(item.id);
-                  setNomeFunc(item.nome);
-                  setEmailFunc(item.email);
-                  setSenhaFunc(item.senha);
+                  setEditandoReceitaId(item.id);
+                  setNovaReceitaNome(item.nome);
+                  setItensSelecionados(item.itens);
                 }}
               >
                 <Text style={styles.buttonText}>Editar</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.buttonDelete, { flex: 1 }]}
-                onPress={() => confirmarExclusao(item.id, "funcionario", item.nome)}
+                style={styles.buttonDelete}
+                onPress={() => confirmarExclusao(item.id, "receita", item.nome)}
               >
                 <Text style={styles.buttonText}>Excluir</Text>
               </TouchableOpacity>
