@@ -38,5 +38,5 @@ Implementei metade do sistema de Relatórios. Dá pra ver o sistema em ação ab
 Atualmente, o sistema de Relatórios é inteiramente local, então falta integrá-lo com o Firestore e fazer uma tela pros administradores acessarem. Se der tempo, eu gostaria de fazer uma funcionalidade nessa tela pra filtrar os relatórios por data e por pessoa; me parece algo útil.
 
 Outras mudanças:
-- O arquivo `AdminScreen/FuncionarioSection.js` era quase idêntico a `AdminScreen/ReceitasSection.js`, por algum motivo. Eu puxei uma versão levemente mais antiga de `FuncionarioSection.js` e arrumei;
+- O arquivo `AdminScreen/FuncionariosSection.js` era quase idêntico a `AdminScreen/ReceitasSection.js`, por algum motivo. Eu puxei uma versão levemente mais antiga de `FuncionariosSection.js` e arrumei;
 - Os arquivos `AdminScreen/AdmScreen.js` e `AdminScreen/AdminSection.js` tinham seus conteúdos trocados, de alguma forma; o componente `AdmScreen` estava em `AdminSection.js` e vice-versa. Arrumei também.
