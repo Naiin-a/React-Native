@@ -296,26 +296,26 @@ export default function ReceitasSection({
               })}
             </View>
 
-            <View style={styles.row}>
-              <TouchableOpacity
-                style={styles.buttonEdit}
-                onPress={() => {
-                  setReceitaOriginal(item);
-                  setEditandoReceitaId(item.id);
-                  setNovaReceitaNome(item.nome);
-                  setItensSelecionados(item.itens);
-                }}
-              >
-                <Text style={styles.buttonText}>Editar</Text>
-              </TouchableOpacity>
+            <View style={styles.buttonRow}>
+  <TouchableOpacity
+     style={styles.buttonEdit}
+    onPress={() => {
+      setReceitaOriginal(item);
+      setEditandoReceitaId(item.id);
+      setNovaReceitaNome(item.nome);
+      setItensSelecionados(item.itens);
+    }}
+  >
+    <Text style={styles.buttonText}>Editar</Text>
+  </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.buttonDelete}
-                onPress={() => confirmarExclusao(item.id, "receita", item.nome)}
-              >
-                <Text style={styles.buttonText}>Excluir</Text>
-              </TouchableOpacity>
-            </View>
+  <TouchableOpacity
+    style={styles.buttonDelete}
+    onPress={() => confirmarExclusao(item.id, "receita", item.nome)}
+  >
+    <Text style={styles.buttonText}>Excluir</Text>
+  </TouchableOpacity>
+</View>
           </View>
         )}
       />

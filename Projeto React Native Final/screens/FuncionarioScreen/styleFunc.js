@@ -100,9 +100,11 @@ export default StyleSheet.create({
   },
 
   logoutContainer: {
-    marginVertical: 30,
+    marginVertical: 30, 
+    marginBottom: 60, 
     alignItems: "center",
   },
+
 
   emptyText: {
     color: "#666",
@@ -185,6 +187,13 @@ insufficientText: {
     fontWeight: "bold",
     fontSize: 16,
   },
-
+ copyText: {
+  color: "#555",
+  fontSize: 12,
+  marginTop: 40,
+  position: "absolute",
+  bottom: 20,
+  textAlign: "center",
+},
 
 });

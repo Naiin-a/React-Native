@@ -171,7 +171,7 @@ export default function AdmScreen({ user, onLogout }) {
           <Text style={styles.buttonText}>Sair</Text>
         </TouchableOpacity>
       </View>
-
+      <Text style={styles.copyText}>© 2025 Pomodoro. Todos os direitos reservados.</Text>
       <ConfirmDeleteModal
         visible={modalVisivel}
         nome={itemParaExcluirNome}

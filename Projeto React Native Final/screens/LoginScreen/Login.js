@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button , TouchableOpacity} from "react-native";
+import { View, Text, TextInput, Button , TouchableOpacity, Image} from "react-native";
 import { getDocuments } from "../../firestoreAPI";
 import { adicionarRelatorio } from "../../relatorioAPI";
 import AdmScreen from "../AdminScreen/AdmScreen";
 import FuncionarioScreen from "../FuncionarioScreen/FuncScreen";
 import styles from "../LoginScreen/styleApp";
+import Toast from "react-native-toast-message";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -56,7 +58,14 @@ export default function Login() {
         adicionarRelatorio(user, "fez login no sistema.");
         setLoggedUser(user);
       } else {
-        alert("Usuário ou senha inválidos!");
+        Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Login ou senha incorreto!",
+        position: "top",
+        visibilityTime: 2000,
+      });
+    
       }
     } catch (e) {
       console.log("Erro login:", e.message);
@@ -73,6 +82,12 @@ export default function Login() {
   if (!loggedUser) {
     return (
      <View style={styles.container}>
+     {/* COPYRIGHT */}
+  <Text style={styles.copyText}>© 2025 Pomodoro. Todos os direitos reservados.</Text>
+        <Image
+          source={require("../../assets/pomodoro.png")} // Caminho relativo
+          style={styles.logo} // Estilo que vamos criar
+        />
         <Text style={styles.title}>Login</Text>
         <TextInput
           placeholder="Email"
@@ -94,6 +109,7 @@ export default function Login() {
         <TouchableOpacity style={styles.button} onPress={login}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
+        <Toast />
       </View>
     );
   }

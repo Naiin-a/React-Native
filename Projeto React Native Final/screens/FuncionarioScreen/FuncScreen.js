@@ -229,7 +229,7 @@ export default function FuncScreen({ user, onLogout }) {
           <Text style={styles.buttonText}>Sair</Text>
         </TouchableOpacity>
       </View>
-
+    <Text style={styles.copyText}>© 2025 Pomodoro. Todos os direitos reservados.</Text>
       <Toast config={toastConfig} />
     </View>
   );

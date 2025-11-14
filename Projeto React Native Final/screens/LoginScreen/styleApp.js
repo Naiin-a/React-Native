@@ -38,5 +38,18 @@ export default StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  copyText: {
+  color: "#555",
+  fontSize: 12,
+  marginTop: 40,
+  position: "absolute",
+  bottom: 20,
+  textAlign: "center",
+},logo: {
+    width: 150,
+    height: 150,
+    resizeMode: 'contain',
+    marginBottom: 20,
+  },
 });
 1

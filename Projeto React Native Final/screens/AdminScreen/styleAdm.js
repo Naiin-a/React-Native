@@ -76,10 +76,11 @@ export default StyleSheet.create({
   // ===== Linha dos botões =====
   buttonRow: {
     flexDirection: "row",            // coloca os botões lado a lado
-    justifyContent: "space-between", // separa levemente os dois botões
+    justifyContent: "flex-start", // separa levemente os dois botões
     alignItems: "center",
     marginTop: 12,
-    width: "100%",                   // garante alinhamento na largura do card
+    width: "100%",
+                       // garante alinhamento na largura do card
   },
 
   // ===== Modal =====
@@ -126,11 +127,12 @@ export default StyleSheet.create({
 
   // ===== Logout =====
   logoutContainer: {
-    marginVertical: 30,
+    marginVertical: 30, 
+    marginBottom: 60, 
     alignItems: "center",
   },
 
-  // ===== Input =====
+  // ===== Iaput =====
   input: {
     backgroundColor: "#1E1E1E",
     color: "#FFF",
@@ -190,4 +192,12 @@ export default StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
+    copyText: {
+  color: "#555",
+  fontSize: 12,
+  marginTop: 40,
+  position: "absolute",
+  bottom: 20,
+  textAlign: "center",
+},
 });
