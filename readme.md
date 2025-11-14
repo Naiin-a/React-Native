@@ -9,7 +9,6 @@
 - Telas.
 
 ## Falta:
-- Tela para ver os Relatórios;
 - Integrar a API de Relatórios com o Banco;
 - Ajeitar e adicionar Toasts;
 - Adicionar comentários;
@@ -40,3 +39,6 @@ Atualmente, o sistema de Relatórios é inteiramente local, então falta integr�
 Outras mudanças:
 - O arquivo `AdminScreen/FuncionariosSection.js` era quase idêntico a `AdminScreen/ReceitasSection.js`, por algum motivo. Eu puxei uma versão levemente mais antiga de `FuncionariosSection.js` e arrumei;
 - Os arquivos `AdminScreen/AdmScreen.js` e `AdminScreen/AdminSection.js` tinham seus conteúdos trocados, de alguma forma; o componente `AdmScreen` estava em `AdminSection.js` e vice-versa. Arrumei também.
+
+## 14/11 15:44h atualização:
+Criei uma tela acessível pelos administradores pra visualizar os relatórios e filtrá-los por nome.
