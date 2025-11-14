@@ -7,14 +7,16 @@
 - Estoque;
 - Banco de Dados;
 - Telas.
+- Estilizar.
+- Ajeitar e adicionar Toasts.
 
 ## Falta:
 - Integrar a API de Relatórios com o Banco;
-- Ajeitar e adicionar Toasts;
 - Adicionar comentários;
 - Limpar, organizar e otimizar o código;
-- Estilizar.
 
+## 14/11 18:22h atualização:
+Atualizei o projeto colocando a parte de estilização junto com a que estava o relatorio
 ## 14/11 15:44h atualização:
 Criei uma tela acessível pelos administradores pra visualizar os relatórios e filtrá-los por nome.
 
