@@ -6,14 +6,18 @@
 - Cadastro;
 - Estoque;
 - Banco de Dados;
-- Telas.
-- Estilizar.
+- Relatórios (logs);
+- Telas;
+- Estilizar;
 - Ajeitar e adicionar Toasts.
 
 ## Falta:
-- Integrar a API de Relatórios com o Banco;
+- Nada! Espero
 
+## 16/11 14:14h atualização:
+Tentei integrar o sistema de relatórios com o Firestore, mas isso tava emitindo muitas requisições de leitura por algum motivo, o que fazia o Firestore bloquear requisições por exceder o limite diário, então removi em prol de podermos apresentar o projeto sem medo.
 
+O sistema de relatórios vai permanecer local.
 
 ## 15/11
 botei comentarios, mudei a cor e deixei levemente mais rapido a confirmaçao de receita
