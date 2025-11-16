@@ -12,8 +12,11 @@
 
 ## Falta:
 - Integrar a API de Relatórios com o Banco;
-- Adicionar comentários;
-- Limpar, organizar e otimizar o código;
+
+
+
+## 15/11
+botei comentarios, mudei a cor e deixei levemente mais rapido a confirmaçao de receita
 
 ## 14/11 18:22h atualização:
 Atualizei o projeto colocando a parte de estilização junto com a que estava o relatorio
