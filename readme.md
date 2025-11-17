@@ -40,7 +40,7 @@ Grupo composto por [Maria Eduarda](https://github.com/Mishy-Boog), [Paulo Marcos
 
 ## Como rodar o projeto
 Eis um passo a passo de como importar o projeto no Expo Snack e executá-lo:
-1. Abra o [Expo Snack](https://snack.expo.dev/);
+1. Abra o [Expo Snack](https://snack.expo.dev/) no navegador;
 2. Clique nos três pontinhos ao lado de **Project** e então em **Import git repository**;
 
 	<img width="472" height="319" alt="Imagem mostrando onde clicar." src="https://github.com/user-attachments/assets/854cbd7d-8bee-4f1d-a737-ecb03fdcc8ba" />
