@@ -6,12 +6,12 @@ Grupo composto por [Maria Eduarda](https://github.com/Mishy-Boog), [Paulo Marcos
 ## Do que se trata?
 É uma aplicação de **controle de estoque** voltada para lanchonetes e restaurantes. A ideia principal é poder registrar **receitas** que, ao serem produzidas, automaticamente subtraem seus ingredientes do estoque.
 
-## Tecnologias utilizadas:
+## Tecnologias utilizadas
 - Front-end em **React Native** (JavaScript) rodando no [Expo Snack](https://snack.expo.dev/);
 - Back-end em **JavaScript** com **Firebase**;
 - Bibliotecas/módulos utilizados: [React](https://www.npmjs.com/package/react), [React Native](https://www.npmjs.com/package/react-native) e [react-native-toast-message](https://www.npmjs.com/package/react-native-toast-message).
 
-## Funcionalidades do projeto:
+## Funcionalidades do projeto
 - Controle de **estoque**, que permite registrar itens e sua quantidade (CRUD);
 - Registro e produção de **receitas**, que automaticamente subtraem seus ingredientes do estoque (CRUD);
 - Cadastro e remoção de **novos funcionários** e **administradores** (CRUD);
@@ -38,7 +38,7 @@ Grupo composto por [Maria Eduarda](https://github.com/Mishy-Boog), [Paulo Marcos
 
 ---
 
-## Como rodar o projeto?
+## Como rodar o projeto
 Eis um passo a passo de como importar o projeto no Expo Snack e executá-lo:
 1. Abra o [Expo Snack](https://snack.expo.dev/);
 2. Clique nos três pontinhos ao lado de **Project** e então em **Import git repository**;
