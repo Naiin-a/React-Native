@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"; // Importa React e hooks
-import { View, Text, TextInput, FlatList, TouchableOpacity } from "react-native"; // Componentes visuais
+import { View, Text, TextInput, FlatList, TouchableOpacity, ActivityIndicator } from "react-native"; // Componentes visuais
 import Toast from "react-native-toast-message"; // Para mostrar mensagens temporárias
 import { adicionarRelatorio } from "../../relatorioAPI"; // Função para registrar ações no sistema
 import styles from "./styleAdm"; // Importa estilos do componente
@@ -13,6 +13,7 @@ export default function AdminsSection({
   user, // Usuário logado
 }) {
   // Estados locais
+  const [esperando, setEsperando] = useState(false);
   const [admins, setAdmins] = useState([]); // Lista de admins
   const [nomeAdm, setNomeAdm] = useState(""); // Nome do admin no formulário
   const [emailAdm, setEmailAdm] = useState(""); // Email do admin no formulário
@@ -42,6 +43,8 @@ export default function AdminsSection({
   async function salvarAdm() {
     // Se algum campo obrigatório estiver vazio, não faz nada
     if (!nomeAdm || !emailAdm || !senhaAdm) return;
+
+    setEsperando(true);
 
     // Busca todos os admins e usuários para validar emails duplicados
     const adminsDocs = await getDocuments("admins");
@@ -124,6 +127,7 @@ export default function AdminsSection({
     }
 
     // Limpa campos do formulário após salvar
+    setEsperando(false);
     setNomeAdm("");
     setEmailAdm("");
     setSenhaAdm("");
@@ -215,9 +219,9 @@ export default function AdminsSection({
 
       {/* Botão salvar/atualizar */}
       <TouchableOpacity style={styles.buttonPrimary} onPress={salvarAdm}>
-        <Text style={styles.buttonText}>
+        {esperando ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.buttonText}>
           {editandoAdmId ? "Atualizar" : "Salvar"}
-        </Text>
+        </Text>}
       </TouchableOpacity>
 
       {/* Lista de administradores */}

@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Modal } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
 import styles from "./styleFunc"; // mesmo estilo usado nas outras telas
 
 export default function ConfirmarReceitaModal({
@@ -9,6 +9,8 @@ export default function ConfirmarReceitaModal({
   setModalVisivel,       // função para atualizar a visibilidade do modal
   estoque,               // lista de itens disponíveis no estoque
 }) {
+
+  const [esperando, setEsperando] = useState(false);
 
   // ⚡ Cria um mapa de estoque para acesso rápido pelo itemId
   // Evita percorrer todo o array de estoque toda vez que precisar do nome
@@ -52,9 +54,12 @@ export default function ConfirmarReceitaModal({
             {/* Botão para confirmar a receita */}
             <TouchableOpacity
               style={[styles.modalButton, styles.confirmButton]}
-              onPress={confirmarReceita}
+              onPress={() => {
+                if (esperando) {return;}
+                confirmarReceita(setEsperando);
+              }}
             >
-              <Text style={styles.modalButtonText}>Confirmar</Text>
+              {esperando ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.modalButtonText}>Confirmar</Text>}
             </TouchableOpacity>
           </View>
         </View>

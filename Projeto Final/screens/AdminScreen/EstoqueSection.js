@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 import Toast from "react-native-toast-message";
 import { adicionarRelatorio } from "../../relatorioAPI";
 import styles from "./styleAdm";
@@ -15,6 +15,7 @@ export default function EstoqueSection({
   findDocumentByName, // função para buscar documento por nome
   user, // usuário logado
 }) {
+  const [esperando, setEsperando] = useState(false); // controla quando aparece o ícone de carregamento no botão principal
   const [estoque, setEstoque] = useState([]); // lista de itens do estoque
   const [itemOriginal, setItemOriginal] = useState(null); // usado para relatar alterações antigas
   const [novoNome, setNovoNome] = useState(""); // input de nome
@@ -53,6 +54,8 @@ export default function EstoqueSection({
     if (!novoNome || !novaQuantidade) return;
     const qtd = parseInt(novaQuantidade);
     if (isNaN(qtd) || qtd < 0) return;
+
+    setEsperando(true);
 
     if (editandoId) {
       // Atualiza item existente
@@ -96,6 +99,7 @@ export default function EstoqueSection({
     }
 
     // Limpa inputs e estado de edição
+    setEsperando(false);
     setItemOriginal(null);
     setNovoNome("");
     setNovaQuantidade("");
@@ -163,10 +167,13 @@ export default function EstoqueSection({
       />
 
       {/* Botão para salvar ou atualizar item */}
-      <TouchableOpacity style={styles.buttonPrimary} onPress={salvarItem}>
-        <Text style={styles.buttonText}>
+      <TouchableOpacity style={styles.buttonPrimary} onPress={() => {
+        if (esperando) {return;}
+        salvarItem();
+      }}>
+        {esperando ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.buttonText}>
           {editandoId ? "Atualizar Item" : "Salvar Item"}
-        </Text>
+        </Text>}
       </TouchableOpacity>
 
       <Text style={[styles.textinho, { marginTop: 16 }]}>Itens em estoque:</Text>

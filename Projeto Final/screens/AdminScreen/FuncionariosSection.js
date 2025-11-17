@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 import Toast from "react-native-toast-message";
 import { adicionarRelatorio } from "../../relatorioAPI";
 import styles from "./styleAdm";
@@ -13,6 +13,7 @@ export default function FuncionariosSection({
   user,              // usuário logado (para relatórios)
 }) {
   // Estados do componente
+  const [esperando, setEsperando] = useState(false);
   const [funcionarios, setFuncionarios] = useState([]); // lista de funcionários
   const [nomeFunc, setNomeFunc] = useState("");          // nome do funcionário no formulário
   const [emailFunc, setEmailFunc] = useState("");        // email do funcionário no formulário
@@ -41,6 +42,8 @@ export default function FuncionariosSection({
   // Função para salvar (criar ou atualizar) funcionário
   async function salvarFuncionario() {
     if (!nomeFunc || !emailFunc || !senhaFunc) return; // validação básica
+
+    setEsperando(true);
 
     // buscar todos os usuários e admins para verificar duplicidade de email
     const funcionariosDocs = await getDocuments("usuarios");
@@ -123,6 +126,7 @@ export default function FuncionariosSection({
     }
 
     // resetar formulário
+    setEsperando(false);
     setNomeFunc("");
     setEmailFunc("");
     setSenhaFunc("");
@@ -208,10 +212,13 @@ export default function FuncionariosSection({
       />
 
       {/* Botão de salvar/atualizar */}
-      <TouchableOpacity style={styles.buttonPrimary} onPress={salvarFuncionario}>
-        <Text style={styles.buttonText}>
+      <TouchableOpacity style={styles.buttonPrimary} onPress={() => {
+        if (esperando) {return;}
+        salvarFuncionario();
+      }}>
+        {esperando ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.buttonText}>
           {editandoFuncId ? "Atualizar Funcionário" : "Salvar Funcionário"}
-        </Text>
+        </Text>}
       </TouchableOpacity>
 
       <Text style={[styles.textinho, { marginTop: 16 }]}>Funcionários cadastrados:</Text>

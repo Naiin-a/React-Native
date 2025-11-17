@@ -126,8 +126,10 @@ export default function FuncScreen({ user, onLogout }) {
   }
 
   // === Função para confirmar preparo de receita ===
-  async function confirmarReceita() {
+  /** @param setEsperando {(boolean) => void} será chamado com valor `true` após verificações iniciais e `false` após o término da confirmação */
+  async function confirmarReceita(setEsperando) {
     if (!receitaSelecionada) return;
+    setEsperando(true); // põe a bolinha de carregamento
 
     // Verifica se todos os itens da receita estão disponíveis no estoque
     const todosDisponiveis = receitaSelecionada.itens.every((i) => {
@@ -169,6 +171,7 @@ export default function FuncScreen({ user, onLogout }) {
       position: "bottom",
     });
 
+    setEsperando(false); // utilizado para tirar a bolinha de carregamento
     setModalVisivel(false); // Fecha modal
     setReceitaSelecionada(null); // Limpa seleção
   }

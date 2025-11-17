@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, FlatList, TouchableOpacity, Animated } from "react-native";
+import { View, Text, TextInput, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 import Toast from "react-native-toast-message";
 import { adicionarRelatorio } from "../../relatorioAPI";
 import styles from "./styleAdm";
@@ -13,6 +13,7 @@ export default function ReceitasSection({
   user,               // usuário logado (para relatório)
 }) {
   // Estados principais
+  const [esperando, setEsperando] = useState(false); // controla quando aparece o ícone de carregamento no botão principal
   const [receitas, setReceitas] = useState([]); // lista de receitas
   const [novaReceitaNome, setNovaReceitaNome] = useState(""); // nome da nova receita
   const [itensSelecionados, setItensSelecionados] = useState([]); // itens selecionados para a receita
@@ -80,6 +81,8 @@ export default function ReceitasSection({
   async function salvarReceita() {
     if (!novaReceitaNome || itensSelecionados.length === 0) return; // validação básica
 
+    setEsperando(true);
+
     const itensParaSalvar = itensSelecionados.map((i) => ({
       itemId: i.itemId,
       quantidade: i.quantidade,
@@ -145,6 +148,7 @@ export default function ReceitasSection({
     }
 
     // Limpa estados
+    setEsperando(false);
     setNovaReceitaNome("");
     setItensSelecionados([]);
     setReceitaOriginal(null);
@@ -278,10 +282,13 @@ export default function ReceitasSection({
       )}
 
       {/* Botão principal para salvar/atualizar receita */}
-      <TouchableOpacity style={styles.buttonPrimary} onPress={salvarReceita}>
-        <Text style={styles.buttonText}>
+      <TouchableOpacity style={styles.buttonPrimary} onPress={() => {
+        if (esperando) {return;}
+        salvarReceita();
+      }}>
+        {esperando ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.buttonText}>
           {editandoReceitaId ? "Atualizar Receita" : "Salvar Receita"}
-        </Text>
+        </Text>}
       </TouchableOpacity>
 
       <Text style={[styles.textinho, { marginTop: 16 }]}>Receitas cadastradas:</Text>
